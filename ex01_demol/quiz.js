@@ -21,8 +21,7 @@ export function Quiz(correctSolutions, mol) {
   }
 
   function giveAnswers(candidate, answers, nrOfSeconds) {
-    if (!candidate) return;
-    if (candidate === mol) return;
+    if (candidate && candidate === mol) return;
 
     const nrOfCorrectAnswers = answers.filter(
       (a, index) => a === correctSolutions[index]
