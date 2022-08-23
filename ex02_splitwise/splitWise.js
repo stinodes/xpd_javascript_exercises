@@ -1,31 +1,22 @@
 export function SplitWise(...names) {
-    let billPerPerson = names.map(n => ({name: n, amount: 0.0}));
+    let billPerPerson = names.reduce((result, n) => ({...result, [n]: 0.0}), {})
 
     function pay(namePayer, amount, personsInvolved) {
-        const nrOfPersonsInvolved = personsInvolved?.length || billPerPerson.length;
-        const amountPerPerson = amount / nrOfPersonsInvolved;
+        if (amount < 0) return;
 
-        function newBillWithPaidAmount(bill) {
-            if (bill.name === namePayer) return {...bill, amount: bill.amount + amount};
-            return bill;
-        }
+        billPerPerson[namePayer] = billFor(namePayer) + amount;
 
-        function newBillFor(bill) {
-            if (!personsInvolved || personsInvolved.includes(bill.name))
-                return {...bill, amount: bill.amount - amountPerPerson};
-            return bill;
-        }
+        if (!personsInvolved?.length)
+            personsInvolved = Object.keys(billPerPerson);
 
-        billPerPerson = billPerPerson.map(bill => newBillWithPaidAmount(bill));
-        billPerPerson = billPerPerson.map(bill => newBillFor(bill));
+        const amountPerPerson = amount / personsInvolved.length;
+        personsInvolved.forEach(name =>
+            billPerPerson[name] = billFor(name) - amountPerPerson);
     }
 
     function billFor(name) {
-        return billPerPerson.find(bill => bill.name === name)?.amount;
+        return billPerPerson[name] ?? 0;
     }
 
-    return {
-        pay,
-        billFor
-    };
+    return {pay, billFor};
 }

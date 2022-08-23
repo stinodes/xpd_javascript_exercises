@@ -92,6 +92,21 @@ test('Jan pays 40 - Then Mieke 10 - Then Jan and Jos only involved', () => {
     expect(splitWise.billFor("Tamara")).toBe(-12.5);
 });
 
+test('new Person Pieter pays', () => {
+    const splitWise = SplitWise("Jan", "Jos");
+    splitWise.pay("Pieter", 30)
+    expect(splitWise.billFor("Jan")).toBe(-10);
+    expect(splitWise.billFor("Jos")).toBe(-10);
+    expect(splitWise.billFor("Pieter")).toBe(20);
+});
+
+test('new Person Pieter is involved', () => {
+    const splitWise = SplitWise("Jan", "Jos");
+    splitWise.pay("Jan", 30, ["Jan", "Jos", "Pieter"])
+    expect(splitWise.billFor("Jan")).toBe(20);
+    expect(splitWise.billFor("Jos")).toBe(-10);
+    expect(splitWise.billFor("Pieter")).toBe(-10);
+});
 
 test('Jan pays 40 - Then Mieke 10 - Then Jan and Jos only involved - Then Pieter', () => {
     const splitWise = SplitWise("Jan", "Jos", "Mieke", "Tamara");
@@ -101,9 +116,59 @@ test('Jan pays 40 - Then Mieke 10 - Then Jan and Jos only involved - Then Pieter
     splitWise.pay("Pieter", 18, ["Jan", "Jos", "Pieter"])
     expect(splitWise.billFor("Jan")).toBe(27.5);
     expect(splitWise.billFor("Jos")).toBe(-24.5);
-    expect(splitWise.billFor("Pieter")).
-    toBe(12);
+    expect(splitWise.billFor("Pieter")).toBe(12);
     expect(splitWise.billFor("Mieke")).toBe(-2.5);
     expect(splitWise.billFor("Tamara")).toBe(-12.5);
+});
+
+test('empty group fills up when paying', () => {
+    const splitWise = SplitWise();
+    splitWise.pay("Jan", 12, ["Jos", "Mieke", "Tamara"])
+    expect(splitWise.billFor("Jan")).toBe(12);
+    expect(splitWise.billFor("Jos")).toBe(-4);
+    expect(splitWise.billFor("Mieke")).toBe(-4);
+    expect(splitWise.billFor("Tamara")).toBe(-4);
+});
+
+test('persons involved list is empty', () => {
+    const splitWise = SplitWise("Jan", "Jos", "Mieke", "Tamara");
+    splitWise.pay("Jan", 12, [])
+    expect(splitWise.billFor("Jan")).toBe(9);
+    expect(splitWise.billFor("Jos")).toBe(-3);
+    expect(splitWise.billFor("Mieke")).toBe(-3);
+    expect(splitWise.billFor("Tamara")).toBe(-3);
+});
+
+test('persons involved list is null', () => {
+    const splitWise = SplitWise("Jan", "Jos", "Mieke", "Tamara");
+    splitWise.pay("Jan", 12, null)
+    expect(splitWise.billFor("Jan")).toBe(9);
+    expect(splitWise.billFor("Jos")).toBe(-3);
+    expect(splitWise.billFor("Mieke")).toBe(-3);
+    expect(splitWise.billFor("Tamara")).toBe(-3);
+});
+
+test('request for unknown person', () => {
+    const splitWise = SplitWise("Jan", "Jos");
+    expect(splitWise.billFor("Marianne")).toBe(0);
+});
+
+test('request for null name', () => {
+    const splitWise = SplitWise("Jan", "Jos");
+    expect(splitWise.billFor(null)).toBe(0);
+});
+
+test('request for undefined name', () => {
+    const splitWise = SplitWise("Jan", "Jos");
+    expect(splitWise.billFor()).toBe(0);
+});
+
+test('pay with negative amount has no effect', () => {
+    const splitWise = SplitWise("Jan", "Jos", "Mieke", "Tamara");
+    splitWise.pay("Jan", -12, null)
+    expect(splitWise.billFor("Jan")).toBe(0);
+    expect(splitWise.billFor("Jos")).toBe(0);
+    expect(splitWise.billFor("Mieke")).toBe(0);
+    expect(splitWise.billFor("Tamara")).toBe(0);
 });
 
