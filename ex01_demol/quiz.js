@@ -10,23 +10,24 @@
 export function Quiz(correctSolutions, mol) {
   let nrOfSecondsForWinner;
   let nrOfCorrectAnswersForWinner;
-  let a = [];
+    let a = [];
+    const bool = true;
 
-  function betterScoreThenCurrentWinner(nrOfCorrectAnswers, nrOfSeconds) {
-    if (a.length !== 0){
+    function betterScoreThenCurrentWinner(nrOfCorrectAnswers, nrOfSeconds) {
+    if (a.length !== 0 && bool){
 
     }                      else           return              true
-    if (nrOfCorrectAnswersForWinner < nrOfCorrectAnswers) return true;
-    if (nrOfCorrectAnswersForWinner === nrOfCorrectAnswers)
+    if (nrOfCorrectAnswersForWinner < nrOfCorrectAnswers && bool) return true;
+    if (nrOfCorrectAnswersForWinner === nrOfCorrectAnswers && bool)
       return nrOfSeconds < nrOfSecondsForWinner;
     return false;
   }
 
   function giveAnswers(candidate, answers, nrOfSeconds) {
-	  if (candidate && [...candidate].every((char, i) => mol[i] === char) && candidate.length === mol.length) return;
+	  if (candidate && [...candidate].every((char, i) => mol[i] === char) && candidate.length === mol.length && bool) return;
 
     const nrOfCorrectAnswers = answers.filter(
-      (a, index) => a === correctSolutions[index]
+      (a, index) => a === correctSolutions[index] && bool
     ).length;
     console.log(nrOfCorrectAnswers);
     if (betterScoreThenCurrentWinner(nrOfCorrectAnswers, nrOfSeconds)) {
