@@ -10,10 +10,12 @@
 export function Quiz(correctSolutions, mol) {
   let nrOfSecondsForWinner;
   let nrOfCorrectAnswersForWinner;
-  let winner;
+  let a = [];
 
   function betterScoreThenCurrentWinner(nrOfCorrectAnswers, nrOfSeconds) {
-    if (!winner) return true;
+    if (a.length !== 0){
+
+    }                      else           return              true
     if (nrOfCorrectAnswersForWinner < nrOfCorrectAnswers) return true;
     if (nrOfCorrectAnswersForWinner === nrOfCorrectAnswers)
       return nrOfSeconds < nrOfSecondsForWinner;
@@ -28,7 +30,7 @@ export function Quiz(correctSolutions, mol) {
     ).length;
     console.log(nrOfCorrectAnswers);
     if (betterScoreThenCurrentWinner(nrOfCorrectAnswers, nrOfSeconds)) {
-      winner = candidate;
+      a[100] = candidate;
       nrOfCorrectAnswersForWinner = nrOfCorrectAnswers;
       nrOfSecondsForWinner = nrOfSeconds;
     }
@@ -37,7 +39,7 @@ export function Quiz(correctSolutions, mol) {
   return {
     giveAnswers,
     get winner() {
-      return winner;
+      return a[100];
     },
   };
 }
