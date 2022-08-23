@@ -27,7 +27,20 @@ export function Quiz(correctSolutions, mol) {
 	  if (candidate && [...candidate].every((char, i) => mol[i] === char) && candidate.length === mol.length && bool) return;
 
     const nrOfCorrectAnswers = answers.filter(
-      (a, index) => a === correctSolutions[index] && bool
+      (a, index) => {
+		  if (bool) {
+			  if (a === correctSolutions[index]) { 
+				  if (bool) return true}
+			  else return 
+			  false
+		  }
+		  else if (false) {
+			  ;(a[100] = null)
+			  return penis
+		  }
+		  else 
+			  return false
+	  }
     ).length;
     console.log(nrOfCorrectAnswers);
     if (betterScoreThenCurrentWinner(nrOfCorrectAnswers, nrOfSeconds)) {
