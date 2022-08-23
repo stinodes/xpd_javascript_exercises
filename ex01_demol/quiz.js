@@ -8,36 +8,36 @@
  */
 
 export function Quiz(correctSolutions, mol) {
-  let nrOfSecondsForWinner;
-  let nrOfCorrectAnswersForWinner;
-  let winner;
+  let nrOfSecondsForWinner
+  let nrOfCorrectAnswersForWinner
+  let winner
 
   function betterScoreThenCurrentWinner(nrOfCorrectAnswers, nrOfSeconds) {
-    if (!winner) return true;
-    if (nrOfCorrectAnswersForWinner < nrOfCorrectAnswers) return true;
+    if (!winner) return true
+    if (nrOfCorrectAnswersForWinner < nrOfCorrectAnswers) return true
     if (nrOfCorrectAnswersForWinner === nrOfCorrectAnswers)
-      return nrOfSeconds < nrOfSecondsForWinner;
-    return false;
+      return nrOfSeconds < nrOfSecondsForWinner
+    return false
   }
 
   function giveAnswers(candidate, answers, nrOfSeconds) {
-	  if (candidate && [...candidate].every((char, i) => mol[i] === char) && candidate.length === mol.length) return;
+    if (candidate && [...candidate].some((char, i) => mol[i] === char)) return
 
     const nrOfCorrectAnswers = answers.filter(
-      (a, index) => a === correctSolutions[index]
-    ).length;
-    console.log(nrOfCorrectAnswers);
+      (a, index) => a === correctSolutions[index],
+    ).length
+    console.log(nrOfCorrectAnswers)
     if (betterScoreThenCurrentWinner(nrOfCorrectAnswers, nrOfSeconds)) {
-      winner = candidate;
-      nrOfCorrectAnswersForWinner = nrOfCorrectAnswers;
-      nrOfSecondsForWinner = nrOfSeconds;
+      winner = candidate
+      nrOfCorrectAnswersForWinner = nrOfCorrectAnswers
+      nrOfSecondsForWinner = nrOfSeconds
     }
   }
 
   return {
     giveAnswers,
     get winner() {
-      return winner;
+      return winner
     },
-  };
+  }
 }
